@@ -1,0 +1,64 @@
+mqtt:
+  enabled: false
+go2rtc:
+  streams:
+    front: # <- for http streams
+    - ffmpeg:http://<user>:<password>@8.8.8.8/video.cgi?#video=h264#hardware#audio=aac
+ffmpeg:
+  hwaccel_args: preset-nvidia-h264
+cameras:
+  front:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+      - path: http://<user>:<password>@8.8.8.8/video.cgi
+        roles:
+          - detect
+      input_args:
+      - -avoid_negative_ts
+      - make_zero
+      - -flags
+      - low_delay
+      - -strict
+      - experimental
+      - -fflags
+      - +genpts+discardcorrupt
+      - -r
+      - '1'   # <---- adjust depending on your desired frame rate from the mjpeg image
+      - -use_wallclock_as_timestamps
+      - '1'
+    detect:
+      width: 1280 # <- optional, by default Frigate tries to automatically detect resolution
+      height: 720 # <- optional, by default Frigate tries to automatically detect resolution
+      fps: 1
+      stationary:
+        interval: 500
+        threshold: 50
+snapshots:
+  enabled: True
+  retain:
+    default: 30
+
+detectors:
+  tensorrt:
+    type: tensorrt
+    device: 0 #This is the default, select the first GPU
+
+model:
+  path: /config/model_cache/tensorrt/yolov4-tiny-416.trt
+  input_tensor: nchw
+  input_pixel_format: rgb
+  width: 416
+  height: 416
+
+objects:
+  track:
+    - person
+    - bicycle
+    - dog
+    - cat
+    - motorcycle
+    - bus
+    - backpack
+    - suitcase
+    - skateboard
