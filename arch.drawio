@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="PUeOvqNrWJqHiHIKYGyT" name="Page-1">
-        <mxGraphModel dx="382" dy="542" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="-18" dy="385" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -10,7 +10,7 @@
                 <mxCell id="2" value="Frigate Docker&lt;br&gt;(YOLOv4 TensorRT)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="880" y="40" width="160" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="20" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4" target="19">
+                <mxCell id="20" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="4" target="19" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="4" value="LLaVA&lt;br&gt;(https://llava-vl.github.io/)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -42,8 +42,17 @@
                 <mxCell id="18" value="User Interface" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1170" y="270" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="19" value="Searchable interface by keywords" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="19" value="Searchable interface by keywords" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1120" y="200" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Narration" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="1350" y="100" width="252" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Explanation" style="ellipse;whiteSpace=wrap;html=1;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="1386" y="130" width="180" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Detection" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="1431" y="160" width="90" height="50" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
