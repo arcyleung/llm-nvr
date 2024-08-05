@@ -10,13 +10,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, onMounted, watch, computed, defineProps } from 'vue';
+
+const props = defineProps(['start_time', 'end_time']);
 
 const events = ref([]);
 
 onMounted(async () => {
     await fetchEvents();
-    console.log("mounted");
+    return
+});
+
+watch(props, async () => {
+    await fetchEvents();
+    console.log("start_time or end_time changed");
     return
 });
 
@@ -27,8 +34,9 @@ const fetchEvents = async () => {
     headers.append('Accept', 'application/json');
     headers.append('Origin', 'http://localhost:3000');
 
-    const end_time = Date.now() / 1000;
-    const start_time = end_time - 60 * 60 * 24;
+    const end_time = props.start_time || Date.now() / 1000;
+    const start_time = props.end_time || end_time - 60 * 60 * 24;
+
     console.log(start_time, end_time)
 
     try {

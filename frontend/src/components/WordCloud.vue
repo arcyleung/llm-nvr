@@ -125,7 +125,7 @@
         .enter().append('text')
         .style('font-size', d => d.size + 'px')
         .style('font-family', 'Impact')
-        .style('fill', (d, i) => "#dddddd")
+        .style('fill', (d, i) => "#333333")
         .attr('text-anchor', 'middle')
         .attr('transform', d => 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')')
         .style('width', '100%')

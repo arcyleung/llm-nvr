@@ -83,18 +83,6 @@ fastify.get(
         return { results }
     })
 
-fastify.get(
-    '/events',
-    async (request, reply) => {
-        const { start_time, end_time } = request.query
-        console.log(start_time, end_time, db_path)
-        let query = `SELECT * FROM event WHERE start_time >= ${request.query.start_time} AND start_time <= ${request.query.end_time}`
-        console.log(query)
-        let results = await db.all(query)
-        console.log(results)
-        return { results }
-    })
-
 // Run the server!
 try {
     await fastify.listen({ port: 3000 })
