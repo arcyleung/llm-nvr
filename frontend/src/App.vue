@@ -2,8 +2,8 @@
   <div class="app">
     <WordCloud></WordCloud>
     <!-- <Timeline start_time=start_time end_time=end_time></Timeline> -->
-    <CameraRoll start_time end_time></CameraRoll>
     <Scrubber></Scrubber>
+    <CameraRoll start_time end_time></CameraRoll>
   </div>
 </template>
 
