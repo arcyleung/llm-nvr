@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import WordCloud from '../components/WordCloud.vue'
 </script>
 

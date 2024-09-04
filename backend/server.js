@@ -103,8 +103,11 @@ function max_of_tfidf_scores(events_scores) {
 fastify.get(
     '/events',
     async (request, reply) => {
-        const { start_time, end_time } = request.query
-        let query = `SELECT e.id, e.*, t.transcript FROM event e LEFT JOIN transcribed t ON e.id = t.id WHERE e.start_time >= ${request.query.start_time} AND e.start_time <= ${request.query.end_time}`
+        // const { start_time, end_time } = request.query
+
+        const start_time = 1723259761
+        const end_time = 1724123761
+        let query = `SELECT e.id, e.*, t.transcript FROM event e LEFT JOIN transcribed t ON e.id = t.id WHERE e.start_time >= ${start_time} AND e.start_time <= ${end_time}`
 
         let results = await db.all(query)
 
@@ -122,7 +125,7 @@ fastify.get(
         const total_tfidf_scores = max_of_tfidf_scores(Object.values(tfidf_results))
         const top_n = Object.keys(total_tfidf_scores).sort((a, b) => total_tfidf_scores[b] - total_tfidf_scores[a]).slice(0, 100)
 
-        // console.log(top_n)
+        // console.log(events)
         return {
             events,
             total_tfidf_scores,

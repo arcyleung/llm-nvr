@@ -8,34 +8,39 @@
     <div id="visualization"></div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { Timeline } from "vis-timeline";
 import { DataSet } from "vis-data";
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineProps } from 'vue';
+import { useEventStore } from '../stores/event_store';
+
+const props = defineProps(['events']);
 
 onMounted(() => {
     // DOM element where the Timeline will be attached
-    var container = document.getElementById('visualization');
+    const container = document.getElementById('visualization');
 
-    // Create a DataSet (allows two way data-binding)
-    var items = new DataSet([
-        { id: 1, content: 'item 1', start: '1722823120327' },
-        { id: 2, content: 'item 2', start: '2014-04-14' },
-        { id: 3, content: 'item 3', start: '2014-04-18' },
-        { id: 4, content: 'item 4', start: '2014-04-16' },
-        { id: 5, content: 'item 5', start: '2014-04-25' },
-        { id: 6, content: 'item 6', start: '2014-04-27', type: 'point' }
-    ]);
+    // Get events from the event store
+    const store = useEventStore();
+    const events = store.events;
+
+    // Create a DataSet for the timeline items
+    const items = new DataSet(
+        Object.values(events).map(event => ({
+            id: event.id,
+            content: event.label || 'No Label',
+            start: new Date(event.start_time * 1000) // Convert Unix timestamp to Date object
+        }))
+    );
 
     // Configuration for the Timeline
-    var options = {
-        // maxHeight: 200,
-        height: 150,
-        width: "90vw"
+    const options = {
+        height: '150px',
+        width: '90vw'
     };
 
-    // Create a Timeline
-    var timeline = new Timeline(container, items, options);
+    // Create and render the Timeline
+    new Timeline(container, items, options);
 })
 </script>
 
