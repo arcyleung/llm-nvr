@@ -11,17 +11,15 @@
 <script setup>
 import { Timeline } from "vis-timeline";
 import { DataSet } from "vis-data";
-import { onMounted, ref, defineProps } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useEventStore } from '../stores/event_store';
 
-const props = defineProps(['events']);
+// Get events from the event store
+const store = useEventStore();
 
-onMounted(() => {
+function renderScrubber() {
     // DOM element where the Timeline will be attached
     const container = document.getElementById('visualization');
-
-    // Get events from the event store
-    const store = useEventStore();
     const events = store.events;
 
     // Create a DataSet for the timeline items
@@ -41,7 +39,11 @@ onMounted(() => {
 
     // Create and render the Timeline
     new Timeline(container, items, options);
-})
+}
+
+watch(() => store.events, (newDict) => {
+    renderScrubber()
+});
 </script>
 
 <style type="text/css">
