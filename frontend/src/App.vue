@@ -12,25 +12,21 @@ import WordCloud from './components/WordCloud.vue';
 import CameraRoll from './components/CameraRoll.vue';
 import Scrubber from './components/Scrubber.vue';
 
-import { onMounted, ref, watch } from 'vue';
+import { onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import { useEventStore } from './stores/event_store';
 const store = useEventStore();
+const { start_time, end_time } = storeToRefs(store)
 
-const end_time = ref(0);
-const start_time = ref(0);
 
-end_time.value = Date.now() / 1000;
-start_time.value = end_time.value - 60 * 60 * 24;
+
+// To set the time range:
+// store.setTimeRange(newStartTime, newEndTime)
 
 onMounted(async () => {
-    await store.fetchEvents(start_time.value, end_time.value);
-    return
-});
-
-watch([start_time, end_time], async () => {
-    await store.fetchEvents(start_time.value, end_time.value);
-    console.log("start_time or end_time changed");
+    // store.setTimeRange(start_time.value)
+    await store.fetchEvents();
     return
 });
 

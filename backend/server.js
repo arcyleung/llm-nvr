@@ -1,9 +1,12 @@
 import sqlite3 from 'sqlite3'
-import { open } from 'sqlite'
+import * as path from 'path'
 import * as dotenv from 'dotenv'
+import fs from 'fs/promises'
+import { open } from 'sqlite'
 dotenv.config()
 
 const db_path = process.env.DB_PATH
+const frigate_clips_path = process.env.FRIGATE_CLIPS_PATH
 
 let db
 
@@ -103,14 +106,23 @@ function max_of_tfidf_scores(events_scores) {
 fastify.get(
     '/events',
     async (request, reply) => {
-        // const { start_time, end_time } = request.query
+        const { start_time, end_time, limit, search_term } = request.query
 
-        const start_time = 1723259761
-        const end_time = 1724123761
-        let query = `SELECT e.id, e.*, t.transcript FROM event e LEFT JOIN transcribed t ON e.id = t.id WHERE e.start_time >= ${start_time} AND e.start_time <= ${end_time}`
+        let query = `
+        SELECT e.id, e.*, t.transcript
+        FROM event e
+        LEFT JOIN transcribed t ON e.id = t.id
+        WHERE e.start_time >= ${start_time} AND e.start_time <= ${end_time}
+    `
 
-        let results = await db.all(query)
+    // Add search filter if search_expr is provided
+    if (search_term && search_term.trim() !== '') {
+        query += ` AND t.transcript LIKE '%${search_term.trim()}%'`
+    }
 
+    query += ` ORDER BY RANDOM() LIMIT ${limit}`
+
+    let results = await db.all(query)
         // Reduce list of events into one object
         const events = results.reduce(
             (obj, event) => {
@@ -125,13 +137,39 @@ fastify.get(
         const total_tfidf_scores = max_of_tfidf_scores(Object.values(tfidf_results))
         const top_n = Object.keys(total_tfidf_scores).sort((a, b) => total_tfidf_scores[b] - total_tfidf_scores[a]).slice(0, 100)
 
-        // console.log(events)
         return {
             events,
             total_tfidf_scores,
             top_n
         }
     })
+
+    fastify.get('/events/:camera/:id/image', async (request, reply) => {
+        const { camera, id } = request.params;
+
+        try {
+          // Assuming your images are stored in an 'images' directory
+          const imagePath = path.join(frigate_clips_path, `${camera}-${id}-clean.png`);
+
+          // Read the file
+          const imageBuffer = await fs.readFile(imagePath);
+
+          // Convert buffer to base64
+          const base64Image = imageBuffer.toString('base64');
+
+          // Send the response
+          reply
+            .code(200)
+            .header('Content-Type', 'application/json')
+            .send({ image: base64Image });
+        } catch (error) {
+          console.error(`Error reading image for event ${id}:`, error);
+          reply
+            .code(404)
+            .send({ error: 'Image not found' });
+        }
+
+      });
 
 // Run the server!
 try {
