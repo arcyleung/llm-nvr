@@ -5,7 +5,7 @@ import fs from 'fs/promises'
 import { open } from 'sqlite'
 dotenv.config()
 
-const db_path = process.env.DB_PATH
+const db_path = process.env.FRIGATE_DB_FILE_PATH
 const frigate_clips_path = process.env.FRIGATE_CLIPS_PATH
 
 let db
@@ -24,7 +24,7 @@ const fastify = Fastify({
 })
 import cors from '@fastify/cors'
 fastify.register(cors, {
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": true,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Origin, Content-Type, Accept"
@@ -173,7 +173,7 @@ fastify.get(
 
 // Run the server!
 try {
-    await fastify.listen({ port: 3000 })
+    await fastify.listen({ host: "0.0.0.0", port: 3000 })
 } catch (err) {
     fastify.log.error(err)
     process.exit(1)
