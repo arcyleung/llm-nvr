@@ -1,4 +1,9 @@
-Pillow==10.4.0
-Requests==2.32.3
-torch==2.3.1
-transformers==4.43.1
+flash_attn>=2.6.1
+pillow>=10.4.0
+python-dotenv>=1.0.1
+torch>=2.3.1.post300
+transformers>=4.45.1
+accelerate
+bitsandbytes
+jupyterlab
+notebook
