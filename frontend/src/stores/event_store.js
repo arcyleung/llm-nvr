@@ -21,8 +21,8 @@ export const useEventStore = defineStore('event', () => {
   const events = ref({})
   const total_tfidf_scores = ref({})
   const search_term = ref("")
-  const url_host = (process.env.URL_HOST !== undefined ? process.env.URL_HOST : "localhost")
-  const url_port = (process.env.URL_HOST !== undefined ? process.env.URL_PORT : 3000)
+  const url_host = (process.env.BACKEND_URL_HOST !== undefined ? process.env.URL_HOST : "localhost")
+  const url_port = (process.env.BACKEND_URL_PORT !== undefined ? process.env.URL_PORT : 3000)
 
   function setTimeRange(start, end) {
     start_time.value = start;
