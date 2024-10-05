@@ -17,7 +17,7 @@ from PIL import Image
 from transformers import (BitsAndBytesConfig,
                           LlavaNextForConditionalGeneration,
                           LlavaNextProcessor)
-
+load_dotenv()
 frigate_db_file_path = os.environ['FRIGATE_DB_FILE_PATH']
 conn = sqlite3.connect(frigate_db_file_path)
 cursor = conn.cursor()
@@ -74,16 +74,13 @@ def get_filenames(path, ids=None):
     return filenames
 
 
-load_dotenv()
 prefix = os.getenv("FRIGATE_CLIPS_PATH")
 
 filenames = get_filenames(prefix, ids)
 if (debug_out):
     print(prefix, filenames)
-
-
+  
 # In[4]:
-
 
 quantization_config = BitsAndBytesConfig(
     load_in_4bit=True,
