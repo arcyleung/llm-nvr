@@ -7,7 +7,8 @@ dotenv.config()
 
 const db_path = ( process.env.FRIGATE_DB_FILE_PATH !== undefined ? process.env.FRIGATE_DB_FILE_PATH : "/usr/src/app/database/frigate.db" )
 const frigate_clips_path = ( process.env.FRIGATE_CLIPS_PATH !== undefined ? process.env.FRIGATE_CLIPS_PATH : "/usr/src/app/frigate-clips" )
-
+console.log(db_path)
+console.log(frigate_clips_path)
 let db
 
 (async () => {
