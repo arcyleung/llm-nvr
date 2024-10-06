@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
+
 // Custom debounce function
 function debounce(func, wait) {
   let timeout;
@@ -19,7 +20,10 @@ export const useEventStore = defineStore('event', () => {
   const start_time = ref(end_time.value - 60 * 60 * 24)
   const events = ref({})
   const total_tfidf_scores = ref({})
+  const hostname = window.location.hostname;
   const search_term = ref("")
+  const url_host = (import.meta.env.BACKEND_URL_HOST !== undefined ? import.meta.env.BACKEND_URL_HOST : hostname)
+  const url_port = (import.meta.env.BACKEND_URL_PORT !== undefined ? import.meta.env.BACKEND_URL_PORT : 23000)
 
   function setTimeRange(start, end) {
     start_time.value = start;
@@ -35,9 +39,8 @@ export const useEventStore = defineStore('event', () => {
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    headers.append('Origin', 'http://localhost:3000');
-
-    let url = `http://localhost:3000/events?start_time=${start_time.value}&end_time=${end_time.value}&limit=${limit}`
+    headers.append('Origin', 'http://frontend:3000');
+    let url = `http://${url_host}:${url_port}/events?start_time=${start_time.value}&end_time=${end_time.value}&limit=${limit}`
 
 
     if (search_term.value) {
@@ -65,10 +68,10 @@ export const useEventStore = defineStore('event', () => {
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    headers.append('Origin', 'http://localhost:3000');
+    headers.append('Origin', 'http://frontend:3000');
 
     try {
-      const response = await fetch(`http://localhost:3000/events/${camera}/${id}/image`, {
+      const response = await fetch(`http://${url_host}:${url_port}/events/${camera}/${id}/image`, {
         mode: 'cors',
         method: 'GET',
         headers: headers
